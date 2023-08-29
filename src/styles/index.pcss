@@ -1,0 +1,39 @@
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap";
+@import "helpers.pcss";
+
+:root {
+  --background-color: #272b30;
+  --header-color: #303840;
+  --bg-blur-color: rgba(39, 43, 48, 0.4);
+  --white: #f4f4f4;
+  --blue: #007ef3;
+  --gray: #9fa5ad;
+}
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  border: none;
+}
+
+html {
+  background-color: var(--background-color);
+  font-family: "Golos UI", sans-serif;
+  color: var(--white);
+}
+
+.ant-layout,
+.ant-menu,
+.ant-btn,
+.ant-space,
+.ant-list,
+.ant-pagination-item-link,
+.ant-pagination-item-ellipsis {
+  background: none;
+  font-family: "Golos UI", sans-serif;
+  color: var(--white) !important;
+  border: none;
+}
