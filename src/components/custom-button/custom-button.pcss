@@ -1,7 +1,7 @@
 .custom-button {
   background-color: var(--blue) !important;
   padding: 12px 20px;
-  box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 9px 0 rgba(0 0 0 / 25%);
   border-radius: 4px;
   position: absolute;
   bottom: 30px;
@@ -13,4 +13,12 @@
   text-transform: uppercase;
   box-sizing: border-box;
   height: fit-content;
+}
+
+@media (max-width: 576px) {
+  .custom-button {
+    width: 100%;
+    margin-top: 10px;
+    position: initial;
+  }
 }

@@ -1,6 +1,5 @@
 import { Button } from "antd";
 import "./custom-button.pcss";
-import { MouseEventHandler } from "react";
 
 export type CustomButtonType = {
   onClick: (e: any) => void;

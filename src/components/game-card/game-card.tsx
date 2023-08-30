@@ -1,17 +1,18 @@
-import { Skeleton } from "antd";
 import "./game-card.pcss";
-import { useEffect, useState } from "react";
-import { Game } from "@/store/reducers/games-list-slice";
-import { useNavigate } from "react-router-dom";
 import stringToRuDate from "@/utils/string-to-ru-date";
+import useCustomNavigate from "@/hooks/use-custom-navigate";
+import { Game } from "@/store/reducers/game-page-slice";
 
 export type GameCardType = Partial<Game>;
 
 export default function GameCard(props: GameCardType) {
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
 
   return (
-    <div className="game-card" onClick={() => navigate(props.id!.toString())}>
+    <div
+      className="game-card"
+      onClick={() => customNavigate(props.id!.toString())}
+    >
       <div className="game-card__image-container">
         <img
           src={props.thumbnail}

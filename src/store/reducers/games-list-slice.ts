@@ -1,7 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import apiGames, {
-  GamesListQueryType,
-} from "@/api/api-games";
+import apiGames, { GamesListQueryType } from "@/api/api-games";
 import { Game } from "./game-page-slice";
 import { Status } from "@/types/status-enum";
 
@@ -67,6 +65,7 @@ const gamesListSlice = createSlice({
       })
       .addCase(getGames.rejected, (state) => {
         state.games = [];
+        console.log("qwer");
         state.gamesLoadedStatus = Status.REJECTED;
       });
   },

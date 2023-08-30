@@ -1,54 +1,63 @@
-import { useNavigate, useParams } from "react-router-dom";
-import "./game-page";
+import { useParams } from "react-router-dom";
+import "./game-page.pcss";
 import { Carousel, Layout, Spin } from "antd";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { useEffect } from "react";
-import { getGameById } from "@/store/reducers/game-page-slice";
-import { Status } from "@/types/status-enum";
 import CustomButton from "@/components/custom-button/custom-button";
+import useGameSelector from "@/hooks/use-game-selector";
+import { ArrowLeftOutlined, LoadingOutlined } from "@ant-design/icons";
+import { useAppSelector } from "@/store";
+import { Status } from "@/types/status-enum";
+import { useMemo } from "react";
+import Error from "@/components/error/error";
+import useCustomNavigate from "@/hooks/use-custom-navigate";
 
 const { Content } = Layout;
+const antIcon = <LoadingOutlined style={{ fontSize: 60 }} spin />;
+
+
 
 export default function GamePage() {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch();
-  const { game: id } = useParams();
-  const { game, gameLoadedStatus } = useAppSelector((state) => state.gamePage);
+  const customNavigate = useCustomNavigate()
+  const { gameId } = useParams();
+  const { gameLoadedStatus } = useAppSelector((state) => state.gamePage);
+  const isRejectedStatus = useMemo(
+    () => gameLoadedStatus == Status.REJECTED,
+    [gameLoadedStatus]
+  );
+  const isPendingStatus = useMemo(
+    () => gameLoadedStatus == Status.PENDING,
+    [gameLoadedStatus]
+  );
+  const game = useGameSelector(gameId!);
 
-  useEffect(() => {
-    //TODO remake
-    dispatch(getGameById({ id: +id! }));
-  }, []);
-
-  useEffect(() => {
-    console.log(game);
-  }, [game]);
   return (
     <main>
-      {gameLoadedStatus == Status.PENDING ? (
-        <Spin/>
-      ) : (
-        <Content
-          style={{
-            paddingTop: "64px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <div>
-            <a onClick={()=>navigate(-1)}>Back to the main page</a>
-          </div>
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                height: "fit-content",
-                width: "445px",
-                overflow: "hidden",
-                position: "relative",
-                flexShrink: 0,
-              }}
-            >
-              <Carousel>
+      <Content className="game-page">
+        <div>
+          <a
+            className="text-base-font-regular game-page__back"
+            onClick={() => customNavigate("/")}
+          >
+            <ArrowLeftOutlined />
+            Back to the main page
+          </a>
+        </div>
+        {isRejectedStatus && <Error/>}
+        {!game && isPendingStatus && <Spin indicator={antIcon} />}
+        {game && (
+          <div className="game-page__container">
+            <div className="game-page__images-part">
+              <div className="game-page__thumbnail">
+                <img
+                  className="game-page__thumbnail-img"
+                  src={game?.thumbnail}
+                  alt="thumbnail"
+                />
+                <CustomButton
+                  label="start the game"
+                  onClick={() => (window.location.href = game?.game_url)}
+                />
+              </div>
+              <Carousel autoplay>
                 {game?.screenshots?.map((screenshot) => (
                   <img
                     key={screenshot.id}
@@ -57,38 +66,52 @@ export default function GamePage() {
                   />
                 ))}
               </Carousel>
-              <CustomButton
-                label="start the game"
-                onClick={() => console.log(game?.game_url)}
-              />
             </div>
-            <div>
-              <h1>{game?.title}</h1>
-              <p>
-                <span>Release date</span> {game?.release_date}
-              </p>
-              <p>
-                <span>Publisher</span> {game?.publisher}
-              </p>
-              <p>
-                <span>Developer</span> {game?.developer}
-              </p>
-              <p>
-                <span>Genre</span> {game?.genre}
-              </p>
-              <h2>Minimum requirements</h2>
-              <div>
-                <p>{game?.minimum_system_requirements?.os}</p>
-                <p>{game?.minimum_system_requirements?.processor}</p>
-                <p>{game?.minimum_system_requirements?.memory}</p>
-                <p>{game?.minimum_system_requirements?.graphics}</p>
-                <p>{game?.minimum_system_requirements?.storage}</p>
+            <div className="game-page__info-part">
+              <h1 className="text-xl-font-medium">{game?.title}</h1>
+              <div className="text-base-font-regular-lg-heigth game-page__game-info">
+                <p className="game-page__game-info-row">
+                  <span className="game-page__game-info-row-title">
+                    Release date
+                  </span>
+                  <span>{game?.release_date}</span>
+                </p>
+                <p className="game-page__game-info-row">
+                  <span className="game-page__game-info-row-title">
+                    Publisher
+                  </span>
+                  <span>{game?.publisher}</span>
+                </p>
+                <p className="game-page__game-info-row">
+                  <span className="game-page__game-info-row-title">
+                    Developer
+                  </span>
+                  <span>{game?.developer}</span>
+                </p>
+                <p className="game-page__game-info-row">
+                  <span className="game-page__game-info-row-title">Genre</span>
+                  <span>{game?.genre}</span>
+                </p>
               </div>
-              <p>{game?.description}</p>
+              <div className="game-page__min-req-block">
+                <h2 className="text-lg-font-medium-lg-heigth">
+                  Minimum requirements
+                </h2>
+                <ul className="text-base-font-regular-lg-heigth game-page__min-req-list">
+                  <li>{game?.minimum_system_requirements?.os}</li>
+                  <li>{game?.minimum_system_requirements?.processor}</li>
+                  <li>{game?.minimum_system_requirements?.memory}</li>
+                  <li>{game?.minimum_system_requirements?.graphics}</li>
+                  <li>{game?.minimum_system_requirements?.storage}</li>
+                </ul>
+                <p className="text-base-font-regular-lg-heigth">
+                  {game?.description}
+                </p>
+              </div>
             </div>
           </div>
-        </Content>
-      )}
+        )}
+      </Content>
     </main>
   );
 }

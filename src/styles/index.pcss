@@ -2,9 +2,10 @@
 @import "helpers.pcss";
 
 :root {
+  --font-size: 16px;
   --background-color: #272b30;
   --header-color: #303840;
-  --bg-blur-color: rgba(39, 43, 48, 0.4);
+  --bg-blur-color: rgba(39 43 48 / 40%);
   --white: #f4f4f4;
   --blue: #007ef3;
   --gray: #9fa5ad;
@@ -22,6 +23,7 @@
 html {
   background-color: var(--background-color);
   font-family: "Golos UI", sans-serif;
+  font-size: var(--font-size);
   color: var(--white);
 }
 
@@ -36,4 +38,9 @@ html {
   font-family: "Golos UI", sans-serif;
   color: var(--white) !important;
   border: none;
+}
+
+.ant-row {
+  gap: 16px;
+  justify-content: center;
 }

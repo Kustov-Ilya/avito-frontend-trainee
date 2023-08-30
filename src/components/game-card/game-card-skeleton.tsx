@@ -1,6 +1,5 @@
 import { Skeleton } from "antd";
 import "./game-card.pcss";
-import { useEffect, useState } from "react";
 
 export default function GameCardSkeleton() {
   return (

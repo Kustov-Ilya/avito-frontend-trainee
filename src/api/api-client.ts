@@ -3,6 +3,8 @@ import { IApiClient } from "@/types/api-client";
 
 export const API_ENDPOINT =
   "https://free-to-play-games-database.p.rapidapi.com/api/";
+const MAX_RETRY_COUNT = 3;
+const RETRY_DELAY_MS = 5 * 1000;
 
 export default class ApiClient implements IApiClient {
   private instance: AxiosInstance;
@@ -60,8 +62,7 @@ export default class ApiClient implements IApiClient {
       responseType: "json",
       headers: {
         "Content-Type": "application/json",
-        //TODO
-        "X-RapidAPI-Key": "",
+        "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
         "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
       },
     });
@@ -75,8 +76,20 @@ export default class ApiClient implements IApiClient {
     instance.interceptors.response.use(
       (response) => response,
       (error) => {
-        console.error(`Response error: ${error}`);
-        return Promise.reject(error);
+        const config = error.config;
+        config.retryCount = config.retryCount || 0;
+
+        if (config.retryCount >= MAX_RETRY_COUNT) {
+          return Promise.reject(error);
+        }
+
+        config.retryCount += 1;
+        return new Promise((resolve) =>
+          setTimeout(
+            () => resolve(this.instance.request(config)),
+            RETRY_DELAY_MS
+          )
+        );
       }
     );
 

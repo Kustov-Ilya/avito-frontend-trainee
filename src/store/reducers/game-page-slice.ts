@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiGames, {
   GameByIdQueryType,
-  GamesListQueryType,
 } from "@/api/api-games";
 import { Status } from "@/types/status-enum";
 
@@ -58,7 +57,16 @@ export const getGameById = createAsyncThunk(
 const gamePageSlice = createSlice({
   name: "gamesList",
   initialState,
-  reducers: {},
+  reducers: {
+    setGame(state, action: PayloadAction<Game>) {
+      state.game = action.payload;
+      state.gameLoadedStatus = Status.FULFILED;
+    },
+    clearGame(state) {
+      state.game = undefined;
+      state.gameLoadedStatus = Status.PENDING;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getGameById.fulfilled, (state, action) => {
@@ -77,3 +85,4 @@ const gamePageSlice = createSlice({
 });
 
 export default gamePageSlice.reducer;
+export const { setGame, clearGame } = gamePageSlice.actions;

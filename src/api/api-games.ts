@@ -1,5 +1,6 @@
-import { Game } from "@/store/reducers/games-list-slice";
+import { Game } from "@/store/reducers/game-page-slice";
 import ApiClient, { API_ENDPOINT } from "./api-client";
+import axios from "axios";
 
 export type GamesListQueryType = Partial<{
   platform: string;
@@ -19,18 +20,32 @@ function prepareGamesQuery(query: GamesListQueryType) {
   return searchParams;
 }
 
+let CANCEL_TOKEN_SOURCE = axios.CancelToken.source();
+
+function generateNewCancelTokenSource() {
+  CANCEL_TOKEN_SOURCE = axios.CancelToken.source();
+}
+
 const client = new ApiClient(API_ENDPOINT);
 
 const apiGames = {
   getGames: async (query: GamesListQueryType): Promise<Game[]> => {
     const response = await client.get<Game[]>(
-      `/games?${prepareGamesQuery(query)}`
+      `/games?${prepareGamesQuery(query)}`,
+      null,
+      { cancelToken: CANCEL_TOKEN_SOURCE.token }
     );
     return response?.data;
   },
   getGameById: async (query: GameByIdQueryType): Promise<Game> => {
-    const response = await client.get<Game, GameByIdQueryType>("/game", query);
+    const response = await client.get<Game, GameByIdQueryType>("/game", query, {
+      cancelToken: CANCEL_TOKEN_SOURCE.token,
+    });
     return response?.data;
+  },
+  finishPendingRequests: () => {
+    CANCEL_TOKEN_SOURCE.cancel();
+    generateNewCancelTokenSource();
   },
 };
 

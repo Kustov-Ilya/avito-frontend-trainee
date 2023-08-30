@@ -1,0 +1,73 @@
+@media (max-width: 768px) {
+  .game-page__container {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.game-page {
+  padding: 88px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__back {
+    color: var(--white);
+  }
+
+  &__container {
+    display: flex;
+    gap: 32px;
+  }
+
+  &__images-part {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: fit-content;
+    width: 445px;
+    max-width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  &__thumbnail {
+    position: relative;
+  }
+
+  &__thumbnail-img {
+    width: 100%;
+  }
+
+  &__info-part {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__game-info-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__game-info-row-title {
+    color: var(--gray);
+    width: 120px;
+  }
+
+  &__min-req-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  &__min-req-list {
+    padding-left: 10px;
+  }
+}
