@@ -9,7 +9,8 @@
 Проект запускается на 3001 порту
 
 ## Уточнение по некоторым задачам
-Карточка игры сохраняется в sessionStorage (src/services/browser-storage-service.ts)
-Неудачные запросы обрабатываются в interceptors  в axios (src/api/api-client.ts)
-Прерывание запроса реализовано через кастомный хук (src/hooks/use-custom-navigate.ts)
+
+1. Карточка игры сохраняется в sessionStorage (src/services/browser-storage-service.ts) 
+2. Неудачные запросы обрабатываются в interceptors  в axios (src/api/api-client.ts) 
+3. Прерывание запроса реализовано через кастомный хук (src/hooks/use-custom-navigate.ts) 
 
