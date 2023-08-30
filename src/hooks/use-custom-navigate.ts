@@ -1,7 +1,9 @@
-import apiGames from "@/api/api-games";
-import { NavigateOptions, To, useNavigate } from "react-router-dom";
+import apiGames from '@/api/api-games';
+import { NavigateOptions, To, useNavigate } from 'react-router-dom';
 
-const useCustomNavigate = () => {
+type ReturnFunc = (to: To, options?: NavigateOptions) => void;
+
+const useCustomNavigate = (): ReturnFunc => {
   const navigate = useNavigate();
   const func = (to: To, options?: NavigateOptions) => {
     apiGames.finishPendingRequests();

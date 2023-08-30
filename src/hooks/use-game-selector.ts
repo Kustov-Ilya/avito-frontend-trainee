@@ -1,13 +1,13 @@
-import { useAppDispatch, useAppSelector } from "@/store";
-import { getGameById, setGame } from "@/store/reducers/game-page-slice";
-import { useEffect, useMemo } from "react";
-import browserStorageService from "@/services/browser-storage-service";
+import { useAppDispatch, useAppSelector } from '@/store';
+import { getGameById, setGame } from '@/reducers/game-page-slice';
+import { useEffect, useMemo } from 'react';
+import browserStorageService from '@/services/browser-storage-service';
 
-export default function useGameSelector(id: string) {
+const useGameSelector = (id: string) => {
   const dispatch = useAppDispatch();
   const storedGame = useMemo(
     () => browserStorageService.getStoredGame(id),
-    [id]
+    [id],
   );
   const currentGame = useAppSelector((store) => {
     const { game } = store.gamePage;
@@ -32,4 +32,6 @@ export default function useGameSelector(id: string) {
   }, [currentGame]);
 
   return currentGame;
-}
+};
+
+export default useGameSelector;

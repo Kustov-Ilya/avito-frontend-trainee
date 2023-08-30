@@ -1,35 +1,8 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import apiGames, {
-  GameByIdQueryType,
-} from "@/api/api-games";
-import { Status } from "@/types/status-enum";
-
-type ScreenshotType = { id: number; image: string };
-
-type MinSystemReqsType = {
-  os: string;
-  processor: string;
-  memory: string;
-  graphics: string;
-  storage: string;
-};
-
-export interface Game {
-  id: number;
-  developer: string;
-  freetogame_profile_url: string;
-  game_url: string;
-  genre: string;
-  platform: string;
-  publisher: string;
-  release_date: string;
-  short_description: string;
-  thumbnail: string;
-  title: string;
-  description?: string;
-  screenshots?: ScreenshotType[];
-  minimum_system_requirements?: MinSystemReqsType;
-}
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import apiGames from '@/api/api-games';
+import { Status } from '@/constants/status';
+import { GameByIdQueryType } from '@/types/api-games';
+import { Game } from '@/types/game';
 
 interface GamePageState {
   game?: Game;
@@ -42,20 +15,22 @@ const initialState: GamePageState = {
 };
 
 export const getGameById = createAsyncThunk(
-  "games/getGameById",
+  'games/getGameById',
   async (query: GameByIdQueryType, thunkAPI) => {
     try {
-      return await apiGames.getGameById(query);
+      const response = await apiGames.getGameById(query);
+
+      return response?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({
         error: (error as Error | null)?.message,
       });
     }
-  }
+  },
 );
 
 const gamePageSlice = createSlice({
-  name: "gamesList",
+  name: 'gamesList',
   initialState,
   reducers: {
     setGame(state, action: PayloadAction<Game>) {

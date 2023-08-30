@@ -1,18 +1,22 @@
-import "./jumbotron.pcss";
-import CustomButton from "../custom-button/custom-button";
-import useCustomNavigate from "@/hooks/use-custom-navigate";
+import './jumbotron.pcss';
+import CustomButton from '../custom-button/custom-button';
+import useCustomNavigate from '@/hooks/use-custom-navigate';
+import { GAME_PAGE_URL, IMAGE_URL } from '@/constants/jumbotron';
+import { FC, MouseEventHandler, useCallback } from 'react';
 
-const IMAGE_URL = "https://i.playground.ru/p/VXQPdEE75RxL4W0X6T6PIQ.png";
-const GAME_PAGE_URL = "540";
-
-export default function Jumbotron() {
+const Jumbotron: FC = () => {
   const customNavigate = useCustomNavigate();
+  const onClick: MouseEventHandler<HTMLElement> = useCallback(
+    () => customNavigate(GAME_PAGE_URL),
+    [],
+  );
 
-  const onClick = () => customNavigate(GAME_PAGE_URL);
   return (
     <section className="jumbotron">
-      <img src={IMAGE_URL} alt="Реклама игры" className="jumbotron__image" />
-      <CustomButton onClick={onClick} label="go to the game" />
+      <img src={IMAGE_URL} alt="Реклама игры" className="jumbotron__image"/>
+      <CustomButton onClick={onClick} label="go to the game"/>
     </section>
   );
-}
+};
+
+export default Jumbotron;

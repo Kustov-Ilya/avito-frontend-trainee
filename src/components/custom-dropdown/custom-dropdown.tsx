@@ -1,13 +1,10 @@
-import "./custom-dropdown.pcss";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Typography } from "antd";
-import { useState } from "react";
+import './custom-dropdown.pcss';
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Space, Typography } from 'antd';
+import { MenuProps } from 'rc-menu';
+import { FC, useCallback, useState } from 'react';
 
 export type ItemsType = { key: string; label: string }[];
-
-function getLabelByKey(items: ItemsType, key: string) {
-  return items?.filter((item) => item?.key == key)[0]?.label;
-}
 
 export type CustomDropdownProps = {
   items: ItemsType;
@@ -16,31 +13,45 @@ export type CustomDropdownProps = {
   label: string;
 };
 
-export default function CustomDropdown(props: CustomDropdownProps) {
-  const { selectedKey, setSelectedKey, items, label } = props;
+const getLabelByKey = (items: ItemsType, key: string) =>
+  items?.filter((item) => item?.key == key)[0]?.label;
+
+const CustomDropdown: FC<CustomDropdownProps> = ({
+  selectedKey,
+  setSelectedKey,
+  items,
+  label,
+}) => {
   const [selectedLabel, setSelectedLabel] = useState(
-    getLabelByKey(items, selectedKey)
+    getLabelByKey(items, selectedKey),
+  );
+
+  const onClick: MenuProps['onClick'] = useCallback(
+    (e: Parameters<NonNullable<MenuProps['onClick']>>[0]) => {
+      setSelectedLabel(getLabelByKey(items, e.key));
+      setSelectedKey(e.key);
+    },
+    [setSelectedKey, items],
   );
 
   return (
     <Dropdown
       menu={{
         items,
-        onClick: (e) => {
-          setSelectedLabel(getLabelByKey(items, e.key));
-          setSelectedKey(e.key);
-        },
+        onClick: onClick,
         selectedKeys: [selectedKey],
       }}
-      trigger={["click"]}
+      trigger={['click']}
     >
       <Typography.Link>
         <Space>
           <span className="custom-dropdown__label">{label}</span>
           {selectedLabel}
-          <DownOutlined />
+          <DownOutlined/>
         </Space>
       </Typography.Link>
     </Dropdown>
   );
-}
+};
+
+export default CustomDropdown;

@@ -1,18 +1,19 @@
-import "./filters.pcss";
+import './filters.pcss';
 import CustomDropdown, {
   CustomDropdownProps,
-} from "../custom-dropdown/custom-dropdown";
+} from '../custom-dropdown/custom-dropdown';
+import { FC } from 'react';
 
 export type FiltersProps = {
   items: CustomDropdownProps[];
 };
 
-export default function Filters(props: FiltersProps) {
-  return (
-    <div className="filters">
-      {props.items.map((item, index) => (
-        <CustomDropdown {...item} key={index} />
-      ))}
-    </div>
-  );
-}
+const Filters: FC<FiltersProps> = ({ items }) => (
+  <div className="filters">
+    {items.map((item, index) => (
+      <CustomDropdown {...item} key={index}/>
+    ))}
+  </div>
+);
+
+export default Filters;

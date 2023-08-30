@@ -1,8 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { IApiClient } from "@/types/api-client";
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { IApiClient } from '@/types/api-client';
 
 export const API_ENDPOINT =
-  "https://free-to-play-games-database.p.rapidapi.com/api/";
+  'https://free-to-play-games-database.p.rapidapi.com/api/';
 const MAX_RETRY_COUNT = 3;
 const RETRY_DELAY_MS = 5 * 1000;
 
@@ -13,10 +13,10 @@ export default class ApiClient implements IApiClient {
     this.instance = this.createInstance(baseUrl, timeout);
   }
 
-  public async get<TResponse, TRequest = any>(
+  public async get<TResponse, TRequest = unknown>(
     url: string,
     object?: TRequest,
-    config?: AxiosRequestConfig<TResponse>
+    config?: AxiosRequestConfig<TResponse>,
   ) {
     if (config) {
       config.params = object;
@@ -29,7 +29,7 @@ export default class ApiClient implements IApiClient {
   public async post<TResponse, TRequest>(
     url: string,
     object: TRequest,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig,
   ) {
     return await this.instance.post<TResponse>(url, object, config);
   }
@@ -37,7 +37,7 @@ export default class ApiClient implements IApiClient {
   public async put<TResponse, TRequest>(
     url: string,
     object: TRequest,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig,
   ) {
     return await this.instance.put<TResponse>(url, object, config);
   }
@@ -45,7 +45,7 @@ export default class ApiClient implements IApiClient {
   public async delete<TResponse, TRequest>(
     url: string,
     object: TRequest,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig,
   ) {
     if (config) {
       config.data = object;
@@ -59,11 +59,11 @@ export default class ApiClient implements IApiClient {
     const instance = axios.create({
       baseURL: baseUrl,
       timeout: timeout,
-      responseType: "json",
+      responseType: 'json',
       headers: {
-        "Content-Type": "application/json",
-        "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
-        "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
+        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': import.meta.env.VITE_API_KEY,
+        'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com',
       },
     });
     instance.interceptors.request.use(
@@ -71,26 +71,27 @@ export default class ApiClient implements IApiClient {
       (error) => {
         console.error(`Request error: ${error}`);
         return Promise.reject(error);
-      }
+      },
     );
     instance.interceptors.response.use(
       (response) => response,
       (error) => {
         const config = error.config;
+
         config.retryCount = config.retryCount || 0;
 
         if (config.retryCount >= MAX_RETRY_COUNT) {
           return Promise.reject(error);
         }
-
         config.retryCount += 1;
+
         return new Promise((resolve) =>
           setTimeout(
             () => resolve(this.instance.request(config)),
-            RETRY_DELAY_MS
-          )
+            RETRY_DELAY_MS,
+          ),
         );
-      }
+      },
     );
 
     return instance;

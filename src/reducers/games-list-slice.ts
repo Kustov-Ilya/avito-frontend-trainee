@@ -1,7 +1,8 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import apiGames, { GamesListQueryType } from "@/api/api-games";
-import { Game } from "./game-page-slice";
-import { Status } from "@/types/status-enum";
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import apiGames from '@/api/api-games';
+import { Status } from '@/constants/status';
+import { GamesListQueryType } from '@/types/api-games';
+import { Game } from '@/types/game';
 
 interface GamesListState {
   games: Game[];
@@ -17,27 +18,29 @@ const initialState: GamesListState = {
   games: [],
   gamesLoadedStatus: Status.PENDING,
   filters: {
-    platform: "",
-    genre: "",
-    sortBy: "relevance",
+    platform: '',
+    genre: '',
+    sortBy: 'relevance',
   },
 };
 
 export const getGames = createAsyncThunk(
-  "games/getGames",
+  'games/getGames',
   async (query: GamesListQueryType, thunkAPI) => {
     try {
-      return await apiGames.getGames(query);
+      const response = await apiGames.getGames(query);
+
+      return response?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({
         error: (error as Error | null)?.message,
       });
     }
-  }
+  },
 );
 
 const gamesListSlice = createSlice({
-  name: "gamesList",
+  name: 'gamesList',
   initialState,
   reducers: {
     setPlatform(state, action: PayloadAction<string>) {
@@ -65,7 +68,7 @@ const gamesListSlice = createSlice({
       })
       .addCase(getGames.rejected, (state) => {
         state.games = [];
-        console.log("qwer");
+        console.log('qwer');
         state.gamesLoadedStatus = Status.REJECTED;
       });
   },

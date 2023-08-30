@@ -1,14 +1,15 @@
-import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
-import CustomHeader from "./components/header/header";
+import { Layout } from 'antd';
+import { Outlet } from 'react-router-dom';
+import CustomHeader from './components/header/header';
+import { FC } from 'react';
 
-export default function App() {
-  return (
-    <div className="app">
-      <Layout>
-        <CustomHeader />
-        <Outlet />
-      </Layout>
-    </div>
-  );
-}
+const App: FC = () => (
+  <div className="app">
+    <Layout>
+      <CustomHeader/>
+      <Outlet/>
+    </Layout>
+  </div>
+);
+
+export default App;
