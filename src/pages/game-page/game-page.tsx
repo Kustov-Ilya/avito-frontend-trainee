@@ -28,9 +28,9 @@ const GamePage: FC = () => {
     [gameLoadedStatus],
   );
   const game = useGameSelector(gameId as string);
-  const onClick = useCallback(() => {
+  const handleClick = useCallback(() => {
     if (game) window.location.href = game?.game_url;
-  }, [game]);
+  }, [game?.game_url]);
 
   return (
     <main>
@@ -55,7 +55,7 @@ const GamePage: FC = () => {
                   src={game?.thumbnail}
                   alt="thumbnail"
                 />
-                <CustomButton label="start the game" onClick={onClick}/>
+                <CustomButton label="start the game" onClick={handleClick}/>
               </div>
               <Carousel autoplay>
                 {game?.screenshots?.map((screenshot) => (

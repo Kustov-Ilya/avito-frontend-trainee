@@ -5,7 +5,7 @@ import { GameByIdQueryType } from '@/types/api-games';
 import { Game } from '@/types/game';
 
 interface GamePageState {
-  game?: Game;
+  game: Game | undefined;
   gameLoadedStatus: Status;
 }
 

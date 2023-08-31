@@ -15,13 +15,13 @@ const GameCard: FC<GameCardType> = ({
   release_date,
 }) => {
   const customNavigate = useCustomNavigate();
-  const onClick: MouseEventHandler<HTMLElement> = useCallback(
+  const handleClick: MouseEventHandler<HTMLElement> = useCallback(
     () => customNavigate(id.toString()),
     [id],
   );
 
   return (
-    <div className="game-card" onClick={onClick}>
+    <div className="game-card" onClick={handleClick}>
       <div className="game-card__image-container">
         <img src={thumbnail} alt="Картинка игры" className="game-card__image"/>
       </div>

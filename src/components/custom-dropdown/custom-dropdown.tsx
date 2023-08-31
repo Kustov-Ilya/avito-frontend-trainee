@@ -26,7 +26,7 @@ const CustomDropdown: FC<CustomDropdownProps> = ({
     getLabelByKey(items, selectedKey),
   );
 
-  const onClick: MenuProps['onClick'] = useCallback(
+  const handleClick: MenuProps['onClick'] = useCallback(
     (e: Parameters<NonNullable<MenuProps['onClick']>>[0]) => {
       setSelectedLabel(getLabelByKey(items, e.key));
       setSelectedKey(e.key);
@@ -38,7 +38,7 @@ const CustomDropdown: FC<CustomDropdownProps> = ({
     <Dropdown
       menu={{
         items,
-        onClick: onClick,
+        onClick: handleClick,
         selectedKeys: [selectedKey],
       }}
       trigger={['click']}

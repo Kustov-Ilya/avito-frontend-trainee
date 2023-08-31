@@ -12,13 +12,13 @@ const generateNewCancelTokenSource = () => {
 };
 
 const apiGames = {
-  getGames: async (query: GamesListQueryType): AxiosPromise<Game[]> => {
+  getGames: (query: GamesListQueryType): AxiosPromise<Game[]> => {
     return client.get<Game[]>(`/games?${prepareGamesQuery(query)}`, null, {
       cancelToken: CANCEL_TOKEN_SOURCE.token,
     });
   },
-  getGameById: async (query: GameByIdQueryType): AxiosPromise<Game> => {
-    return await client.get<Game, GameByIdQueryType>('/game', query, {
+  getGameById: (query: GameByIdQueryType): AxiosPromise<Game> => {
+    return client.get<Game, GameByIdQueryType>('/game', query, {
       cancelToken: CANCEL_TOKEN_SOURCE.token,
     });
   },
