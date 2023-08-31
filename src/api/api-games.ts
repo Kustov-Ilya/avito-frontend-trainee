@@ -1,4 +1,4 @@
-import { Game } from '@/reducers/game-page-slice';
+import { Game } from '@/types/game';
 import ApiClient, { API_ENDPOINT } from './api-client';
 import axios, { AxiosPromise } from 'axios';
 import prepareGamesQuery from '@/utils/prepare-games-query';
