@@ -1,4 +1,4 @@
-import './main-page';
+import './main-page.pcss';
 import { Layout } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { FC, useEffect, useMemo } from 'react';
@@ -77,7 +77,7 @@ const MainPage: FC = () => {
               </h2>
               <Filters items={filters}/>
               {!gamesList.length && isPendingStatus && <SkeletonCardList/>}
-              {gamesList.length && <CardList gamesList={gamesList}/>}
+              {!!gamesList.length && <CardList gamesList={gamesList}/>}
             </Layout>
           </div>
         )}
