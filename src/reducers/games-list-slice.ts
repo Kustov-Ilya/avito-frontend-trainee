@@ -44,15 +44,12 @@ const gamesListSlice = createSlice({
   initialState,
   reducers: {
     setPlatform(state, action: PayloadAction<string>) {
-      console.log(state);
       state.filters.platform = action.payload;
     },
     setGenre(state, action: PayloadAction<string>) {
-      console.log(state);
       state.filters.genre = action.payload;
     },
     setSortBy(state, action: PayloadAction<string>) {
-      console.log(state);
       state.filters.sortBy = action.payload;
     },
   },
@@ -68,7 +65,6 @@ const gamesListSlice = createSlice({
       })
       .addCase(getGames.rejected, (state) => {
         state.games = [];
-        console.log('qwer');
         state.gamesLoadedStatus = Status.REJECTED;
       });
   },
